@@ -1227,8 +1227,9 @@ GF_Err gf_isom_clone_sample_descriptions(GF_ISOFile *the_file, u32 trackNumber, 
 /*special shortcut: clones a track (everything except media data and sample info (DTS, CTS, RAPs, etc...)
 also clones sampleDescriptions
 @keep_data_ref: if set, all data references are kept (local ones become external pointing to orig_file name), otherwise all external data refs are removed (track media data will be self-contained)
+@renum_single_tracks: if set, track ID is renumbered to 1.
 @dest_track: track number of cloned track*/
-GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *dest_file, Bool keep_data_ref, u32 *dest_track);
+GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *dest_file, Bool keep_data_ref, Bool renum_single_tracks, u32 *dest_track);
 /*special shortcut: clones IOD PLs from orig to dest if any*/
 GF_Err gf_isom_clone_pl_indications(GF_ISOFile *orig, GF_ISOFile *dest);
 /*clones root OD from input to output file, without copying root OD track references*/

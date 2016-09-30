@@ -681,6 +681,15 @@ GF_Err gf_dasher_enable_segment_timeline(GF_DASHSegmenter *dasher, Bool enable);
 
 GF_Err gf_dasher_enable_single_segment(GF_DASHSegmenter *dasher, Bool enable);
 
+/*!
+ Enables renumbering single track representations to 1
+ *	\param dasher the DASH segmenter object
+ *	\param enable enable or disable
+ *	\return error code if any
+*/
+
+GF_Err gf_dasher_enable_renum_single_tracks(GF_DASHSegmenter *dasher, Bool enable);
+
 /*! 
  Enable single file (with multiple segments) - may be overriden by the current profile
  *	\param dasher the DASH segmenter object

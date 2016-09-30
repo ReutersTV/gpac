@@ -2705,7 +2705,7 @@ GF_Err gf_isom_clone_movie(GF_ISOFile *orig_file, GF_ISOFile *dest_file, Bool cl
 				GF_TrackBox *trak = (GF_TrackBox*)gf_list_get( orig_file->moov->trackList, i);
 				if (!trak) continue;
 				if (keep_hint_tracks || (trak->Media->handler->handlerType != GF_ISOM_MEDIA_HINT)) {
-					e = gf_isom_clone_track(orig_file, i+1, dest_file, GF_FALSE, &dstTrack);
+					e = gf_isom_clone_track(orig_file, i+1, dest_file, GF_FALSE, GF_FALSE, &dstTrack);
 					if (e) return e;
 				}
 			}
@@ -2765,7 +2765,7 @@ GF_Err gf_isom_clone_movie(GF_ISOFile *orig_file, GF_ISOFile *dest_file, Bool cl
 
 
 GF_EXPORT
-GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *dest_file, Bool keep_data_ref, u32 *dest_track)
+GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *dest_file, Bool keep_data_ref, Bool renum_single_tracks, u32 *dest_track)
 {
 	GF_TrackBox *trak, *new_tk;
 	GF_BitStream *bs;
@@ -2796,6 +2796,10 @@ GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *de
 	stbl_temp->CompositionToDecode = stbl->CompositionToDecode;
 
 	bs = gf_bs_new(NULL, 0, GF_BITSTREAM_WRITE);
+
+	if (renum_single_tracks) {
+		trak->Header->trackID = 1;
+	}
 
 	gf_isom_box_size( (GF_Box *) trak);
 	gf_isom_box_write((GF_Box *) trak, bs);

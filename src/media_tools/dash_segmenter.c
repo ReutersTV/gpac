@@ -80,6 +80,7 @@ struct __gf_dash_segmenter
 	Bool single_file;
 	GF_DashSwitchingMode bitstream_switching_mode;
 	Bool segments_start_with_rap;
+	Bool renum_single_tracks;
 
 	Double segment_duration;
 	Bool segment_duration_strict;
@@ -1021,7 +1022,7 @@ static GF_Err gf_media_isom_segment_file(GF_ISOFile *input, const char *output_f
 			continue;
 
 		if (!dash_moov_setup) {
-			e = gf_isom_clone_track(input, i+1, output, GF_FALSE, &TrackNum);
+			e = gf_isom_clone_track(input, i+1, output, GF_FALSE, (dash_input->single_track_num && dash_cfg->renum_single_tracks), &TrackNum);
 			if (e) goto err_exit;
 
 			if (gf_isom_is_track_in_root_od(input, i+1)) gf_isom_add_track_to_root_od(output, TrackNum);
@@ -2901,7 +2902,7 @@ retry_track:
 				u8 defaultPadding;
 				u16 defaultDegradationPriority;
 
-				gf_isom_clone_track(in, j+1, init_seg, GF_FALSE, &track);
+				gf_isom_clone_track(in, j+1, init_seg, GF_FALSE, (dash_inputs[i].single_track_num && dash_opts->renum_single_tracks), &track);
 
 				switch (gf_isom_get_media_subtype(in, j+1, 1)) {
 				case GF_ISOM_SUBTYPE_AVC_H264:
@@ -5478,6 +5479,14 @@ GF_Err gf_dasher_enable_single_file(GF_DASHSegmenter *dasher, Bool enable)
 {
 	if (!dasher) return GF_BAD_PARAM;
 	dasher->single_file = enable;
+	return GF_OK;
+}
+
+GF_EXPORT
+GF_Err gf_dasher_enable_renum_single_tracks(GF_DASHSegmenter *dasher, Bool enable)
+{
+	if (!dasher) return GF_BAD_PARAM;
+	dasher->renum_single_tracks = enable;
 	return GF_OK;
 }
 

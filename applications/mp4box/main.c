@@ -377,6 +377,7 @@ void PrintDASHUsage()
 	        " -mem-frags           fragments will be produced in memory rather than on disk before flushing to disk\n"
 	        " -pssh-moof           stores PSSH boxes in first moof of each segments. By default PSSH are stored in movie box.\n"
 	        " -sample-groups-traf  stores sample group descriptions in traf (duplicated for each traf). If not used, sample group descriptions are stored in the movie box.\n"
+	        " -renum-single-tracks forces track IDs for representations with single tracks to 1.\n"
 
 	        "\n"
 	        "Advanced Options, should not be needed when using -profile:\n"
@@ -1825,6 +1826,7 @@ Bool pssh_in_moof = GF_FALSE;
 Bool samplegroups_in_traf = GF_FALSE;
 Bool daisy_chain_sidx = GF_FALSE;
 Bool single_segment = GF_FALSE;
+Bool renum_single_tracks = GF_FALSE;
 Bool single_file = GF_FALSE;
 Bool segment_timeline = GF_FALSE;
 u32 segment_marker = GF_FALSE;
@@ -3257,6 +3259,9 @@ Bool mp4box_parse_args(int argc, char **argv)
 		else if (!stricmp(arg, "-single-segment")) {
 			single_segment = 1;
 		}
+		else if (!stricmp(arg, "-renum-single-tracks")) {
+			renum_single_tracks = 1;
+		}
 		else if (!stricmp(arg, "-single-file")) {
 			single_file = 1;
 		}
@@ -3894,6 +3899,7 @@ int mp4boxMain(int argc, char **argv)
 		e = gf_dasher_enable_url_template(dasher, (Bool) use_url_template, seg_name, seg_ext);
 		if (!e) e = gf_dasher_enable_segment_timeline(dasher, segment_timeline);
 		if (!e) e = gf_dasher_enable_single_segment(dasher, single_segment);
+		if (!e) e = gf_dasher_enable_renum_single_tracks(dasher, renum_single_tracks);
 		if (!e) e = gf_dasher_enable_single_file(dasher, single_file);
 		if (!e) e = gf_dasher_set_switch_mode(dasher, bitstream_switching_mode);
 		if (!e) e = gf_dasher_set_durations(dasher, dash_duration, dash_duration_strict, interleaving_time);

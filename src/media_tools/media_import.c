@@ -2133,7 +2133,7 @@ GF_Err gf_import_isomedia(GF_MediaImporter *import)
 		gf_isom_set_timescale(import->dest, timescale);
 	}
 
-	e = gf_isom_clone_track(import->orig, track_in, import->dest, (import->flags & GF_IMPORT_USE_DATAREF) ? GF_TRUE : GF_FALSE, &track);
+	e = gf_isom_clone_track(import->orig, track_in, import->dest, (import->flags & GF_IMPORT_USE_DATAREF) ? GF_TRUE : GF_FALSE, GF_FALSE, &track);
 	if (e) goto exit;
 
 	di = 1;
