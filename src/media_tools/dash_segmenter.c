@@ -973,7 +973,7 @@ static GF_Err gf_media_isom_segment_file(GF_ISOFile *input, const char *output_f
 		if (e) goto err_exit;
 
 		/*because of movie fragments MOOF based offset, ISOM <4 is forbidden*/
-		gf_isom_set_brand_info(output, GF_4CC('i','s','o','5'), 1);
+		gf_isom_set_brand_info(output, GF_4CC('i','s','o','6'), 1);
 		gf_isom_modify_alternate_brand(output, GF_4CC('i','s','o','m'), 0);
 		gf_isom_modify_alternate_brand(output, GF_4CC('i','s','o','1'), 0);
 		gf_isom_modify_alternate_brand(output, GF_4CC('i','s','o','2'), 0);
@@ -1162,7 +1162,7 @@ static GF_Err gf_media_isom_segment_file(GF_ISOFile *input, const char *output_f
 				tf->media_time_to_pres_time_shift += (u32) (scale*SegDuration);
 			}
 
-			gf_isom_set_brand_info(output, GF_4CC('i','s','o','5'), 1);
+			gf_isom_set_brand_info(output, GF_4CC('i','s','o','6'), 1);
 
 			/*DASH self-init media segment*/
 			if (dash_cfg->single_file_mode==1) {

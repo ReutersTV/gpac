@@ -177,10 +177,10 @@ GF_Err gf_isom_finalize_for_fragment(GF_ISOFile *movie, u32 media_segment_type)
 
 	/*set brands for segment*/
 
-	/*"msdh": it's a media segment */
-	gf_isom_set_brand_info(movie, GF_4CC('m','s','d','h'), 0);
 	/*remove all brands	*/
 	gf_isom_reset_alt_brands(movie);
+	/*"msdh": it's a media segment */
+	gf_isom_modify_alternate_brand(movie, GF_4CC('m','s','d','h'), 1);
 	/*
 		msdh: it's a media segment
 		sims: it's a media segment with an SSIX
@@ -993,7 +993,7 @@ static GF_Err gf_isom_write_styp(GF_ISOFile *movie, Bool last_segment)
 
 		/*modify brands STYP*/
 
-		/*"msix" brand: this is a DASH Initialization Segment*/
+		/*"msix" brand: this is a DASH indexed media segment*/
 		gf_isom_modify_alternate_brand(movie, GF_4CC('m','s','i','x'), 1);
 		if (last_segment) {
 			/*"lmsg" brand: this is the last DASH Segment*/
