@@ -2765,7 +2765,7 @@ GF_Err gf_isom_clone_movie(GF_ISOFile *orig_file, GF_ISOFile *dest_file, Bool cl
 
 
 GF_EXPORT
-GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *dest_file, Bool keep_data_ref, Bool renum_single_tracks, u32 *dest_track)
+GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *dest_file, Bool keep_data_ref, Bool renum_tracks, u32 *dest_track)
 {
 	GF_TrackBox *trak, *new_tk;
 	GF_BitStream *bs;
@@ -2797,10 +2797,6 @@ GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *de
 
 	bs = gf_bs_new(NULL, 0, GF_BITSTREAM_WRITE);
 
-	if (renum_single_tracks) {
-		trak->Header->trackID = 1;
-	}
-
 	gf_isom_box_size( (GF_Box *) trak);
 	gf_isom_box_write((GF_Box *) trak, bs);
 	gf_bs_get_content(bs, &data, &data_size);
@@ -2825,7 +2821,7 @@ GF_Err gf_isom_clone_track(GF_ISOFile *orig_file, u32 orig_track, GF_ISOFile *de
 	stbl->TimeToSample = (GF_TimeToSampleBox *) gf_isom_box_new(GF_ISOM_BOX_TYPE_STTS);
 
 	/*check trackID validity before adding track*/
-	if (gf_isom_get_track_by_id(dest_file, new_tk->Header->trackID)) {
+	if (gf_isom_get_track_by_id(dest_file, new_tk->Header->trackID) || renum_tracks) {
 		u32 ID = 1;
 		while (1) {
 			if (RequestTrack(dest_file->moov, ID)) break;
